@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --hover-color: #2980b9;
+  --text-light: #ffffff;
+  --text-dark: #333333;
+  --overlay-dark: rgba(0, 0, 0, 0.7);
+  --card-bg: rgba(255, 255, 255, 0.1);
+  --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.2);
+  --shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.flexibility {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 40px 0;
+  background: linear-gradient(var(--overlay-dark), var(--overlay-dark)),
+              url('https://img.freepik.com/premium-photo/flexible-girl-doing-exercise-sky-background-dramatic-sunset_403777-1229.jpg') 
+              center/cover no-repeat fixed;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.flexibility-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.flexibility-container h1 {
+  text-align: center;
+  color: #ffffff !important; /* Explicitly white for visibility */
+  font-size: 2.8rem;
+  font-weight: 600;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* Enhanced shadow for contrast */
+}
+
+.category-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 25px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.category-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-dark);
+}
+
+.category-image {
+  position: relative;
+  height: 60%;
+  overflow: hidden;
+}
+
+.category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-image img {
+  transform: scale(1.05);
+}
+
+.category-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category-content h2 {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.category-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (max-width: 1400px) {
+  .category-row {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    max-width: 900px;
+  }
+
+  .category-card {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .flexibility-container h1 {
+    font-size: 2rem;
+  }
+
+  .category-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    max-width: 400px;
+  }
+
+  .category-card {
+    height: 380px;
+  }
+}
+
+/* Animation delays for cards */
+.category-card:nth-child(1) { animation-delay: 0.1s; }
+.category-card:nth-child(2) { animation-delay: 0.2s; }
+.category-card:nth-child(3) { animation-delay: 0.3s; }
+.category-card:nth-child(4) { animation-delay: 0.4s; }
+.category-card:nth-child(5) { animation-delay: 0.5s; }
+.category-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-card {
+  animation: fadeInUp 0.5s ease-out forwards;
+}

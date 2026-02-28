@@ -1,0 +1,594 @@
+/* Diet.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Styles */
+.diet-page {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1a202c;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, rgba(56, 178, 172, 0.1), rgba(255, 127, 127, 0.1)), url('https://images.unsplash.com/photo-1495195134817-a27ef2a7d579') center center/cover no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 40px 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.diet-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+}
+
+.diet-page a,
+.diet-page button {
+  transition: all 0.3s ease;
+}
+
+.diet-page h1,
+.diet-page h2,
+.diet-page h3,
+.diet-page h4,
+.diet-page h5,
+.diet-page h6 {
+  color: #1a202c;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.diet-page p {
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+
+/* Hero Section (not used in DietPlan, but kept for consistency) */
+.hero-section {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('https://images.unsplash.com/photo-1490818387583-1baba5e638af') center center/cover no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  padding: 0 20px;
+  margin-bottom: 80px;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDEwMCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCAwdj02MGMwIDAgMzAwIDEwMCA3MjAgMTAwczcyMC0xMDAgNzIwLTEwMHY2MHoiLz48L3N2Zz4=') no-repeat bottom center;
+  background-size: cover;
+}
+
+.hero-content {
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
+  color: #fff;
+}
+
+.hero-tagline {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: #f7fafc;
+}
+
+.cta-button {
+  padding: 18px 50px;
+  background: linear-gradient(90deg, #38b2ac, #ff7f7f);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(56, 178, 172, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+.cta-button:hover {
+  background: linear-gradient(90deg, #ff7f7f, #38b2ac);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(56, 178, 172, 0.6);
+}
+
+.cta-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(56, 178, 172, 0.3);
+}
+
+/* Preferences Section (not used in DietPlan, but kept for consistency) */
+.preferences-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.preferences-section button[type="submit"] {
+  padding: 16px 40px;
+  background: linear-gradient(90deg, #38b2ac, #ff7f7f);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(56, 178, 172, 0.4);
+  display: block;
+  margin: 30px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.preferences-section button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+.preferences-section button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+.preferences-section button[type="submit"]:hover {
+  background: linear-gradient(90deg, #ff7f7f, #38b2ac);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(56, 178, 172, 0.6);
+}
+
+.preferences-section button[type="submit"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(56, 178, 172, 0.3);
+}
+
+/* Section Title */
+.section-title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  color: #1a202c;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.section-title::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #38b2ac, #ff7f7f);
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Diet Plans Section */
+.diet-plans-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.diet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px;
+}
+
+.diet-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.diet-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.diet-card::before {
+  content: attr(data-diet-type);
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(90deg, #38b2ac, #ff7f7f);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.diet-image {
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+}
+
+.diet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.diet-card:hover .diet-image img {
+  transform: scale(1.1);
+}
+
+.diet-content {
+  padding: 30px;
+}
+
+.diet-content h3 {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #1a202c;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.diet-content p {
+  color: #2d3748;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.key-points h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #1a202c;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.key-points ul {
+  list-style: none;
+  padding: 0;
+}
+
+.key-points li {
+  color: #2d3748;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.key-points li::before {
+  content: "✔";
+  color: #38b2ac;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  top: 0;
+}
+
+/* Meal Option */
+.meal-option {
+  margin-bottom: 20px;
+}
+
+.meal-option h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1a202c;
+}
+
+/* No Plan Fallback */
+.no-plan {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.no-plan p {
+  font-size: 1.2rem;
+  color: #2d3748;
+}
+
+/* Supplements Section */
+.supplements-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Call to Action Section (not used in DietPlan, but kept for consistency) */
+.cta-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+              url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd') center center/cover no-repeat;
+  background-attachment: fixed;
+  border-radius: 20px;
+  color: #fff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.view-diet-btn {
+  width: 100%;
+  max-width: 300px;
+  padding: 16px;
+  background: linear-gradient(90deg, #38b2ac, #ff7f7f);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(56, 178, 172, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.view-diet-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+.view-diet-btn:hover::before {
+  left: 100%;
+}
+
+.view-diet-btn:hover {
+  background: linear-gradient(90deg, #ff7f7f, #38b2ac);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(56, 178, 172, 0.4);
+}
+
+.view-diet-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(56, 178, 172, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-section {
+    height: 70vh;
+    background-attachment: scroll;
+  }
+
+  .hero-content h1 {
+    font-size: 3.2rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.3rem;
+  }
+
+  .diet-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+
+  .cta-section {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 768px) {
+  .diet-page {
+    padding: 20px 15px;
+    font-size: 14px;
+  }
+
+  .hero-section {
+    height: 60vh;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.1rem;
+  }
+
+  .cta-button {
+    padding: 14px 40px;
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .diet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .diet-image {
+    height: 240px;
+  }
+
+  .diet-content {
+    padding: 20px;
+  }
+
+  .diet-content h3 {
+    font-size: 1.6rem;
+  }
+
+  .meal-option h4 {
+    font-size: 1.3rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .view-diet-btn {
+    max-width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .preferences-section,
+  .diet-plans-section,
+  .cta-section,
+  .supplements-section {
+    padding: 30px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .diet-page {
+    padding: 15px 10px;
+  }
+
+  .hero-section {
+    height: 50vh;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
+  .cta-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .diet-content {
+    padding: 15px;
+  }
+
+  .diet-image {
+    height: 200px;
+  }
+
+  .meal-option h4 {
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,468 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Styles */
+.recipes-page {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7f5;
+  color: #333;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Choice Section (Pre/Post-Workout Selection) */
+.choice-section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+              url('https://imgs.search.brave.com/8YnFIE8HihQBxLeUQJBnqwMvj-f_MInPLqHadlCo4Ts/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9ibG9n/Lm5hc20ub3JnL2h1/YmZzL2FmbV9mZWF0/dXJlc19udXRyaXRp/b25leDEuanBn') center center/cover no-repeat;
+  color: #fff;
+  padding: 0 20px;
+}
+
+.choice-content {
+  max-width: 900px;
+}
+
+.choice-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+}
+
+.choice-tagline {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.choice-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.choice-btn {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.choice-btn:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.choice-image {
+  height: 70%;
+  overflow: hidden;
+}
+
+.choice-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.choice-btn:hover .choice-image img {
+  transform: scale(1.1);
+}
+
+.choice-btn span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2e7d32;
+  text-align: center;
+  padding: 20px;
+  background: #f9fcf9;
+}
+
+/* Filter Section */
+.filter-section {
+  max-width: 1280px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.section-title {
+  text-align: center;
+  color: #2e7d32;
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #34c759, #28a745);
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.filter-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: #ffffff;
+  padding: 15px 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container label {
+  font-size: 1.2rem;
+  color: #2e7d32;
+  font-weight: 500;
+  margin: 0;
+}
+
+.filter-container select {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  background: #f9fcf9;
+  color: #2e7d32;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%232e7d32" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  padding-right: 40px;
+}
+
+.filter-container select:focus {
+  outline: none;
+  border-color: #34c759;
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.3);
+}
+
+.filter-container select option {
+  color: #2e7d32;
+}
+
+.back-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #d0d0d0;
+  transform: translateY(-2px);
+}
+
+.back-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.3);
+}
+
+/* Recipes Section */
+.recipes-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 20px;
+}
+
+/* Meal Time Tabs (Breakfast, Lunch, Dinner) */
+.meal-time-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.meal-time-tab {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(90deg, #34c759, #28a745);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.meal-time-tab.active {
+  background: linear-gradient(90deg, #ff6f61, #ff8a80);
+}
+
+.meal-time-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Collapsible Diet Card */
+.diet-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6e6e6;
+  margin-bottom: 20px;
+}
+
+.diet-content {
+  padding: 20px;
+}
+
+.diet-content h3 {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 1.5em;
+  color: #2e7d32;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.meal-options {
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.meal-option {
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+}
+
+.diet-image {
+  height: 280px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.diet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.meal-option:hover .diet-image img {
+  transform: scale(1.1);
+}
+
+.meal-option h4 {
+  color: #2e7d32;
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+.meal-option p {
+  color: #5a7d5c;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.key-points h4 {
+  color: #2e7d32;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.key-points ul {
+  list-style: none;
+  padding: 0;
+}
+
+.key-points ul li {
+  color: #5a7d5c;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.key-points ul li::before {
+  content: "✔";
+  color: #34c759;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+  top: 0;
+}
+
+.key-points ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+.key-points ol li {
+  color: #5a7d5c;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.no-recipes {
+  text-align: center;
+  color: #5a7d5c;
+  font-size: 1.2rem;
+  margin: 40px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .choice-section {
+    height: 80vh;
+  }
+
+  .choice-content h1 {
+    font-size: 3.2rem;
+  }
+
+  .choice-tagline {
+    font-size: 1.3rem;
+  }
+
+  .choice-btn {
+    width: 250px;
+    height: 350px;
+  }
+
+  .choice-btn span {
+    font-size: 1.3rem;
+  }
+
+  .diet-image {
+    height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .choice-section {
+    height: 70vh;
+  }
+
+  .choice-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .choice-tagline {
+    font-size: 1.1rem;
+  }
+
+  .choice-buttons {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .choice-btn {
+    width: 300px;
+    height: 400px;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .filter-container label {
+    font-size: 1.1rem;
+  }
+
+  .filter-container select {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .meal-time-tabs {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .meal-time-tab {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+
+  .diet-image {
+    height: 200px;
+  }
+
+  .meal-option h4 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .choice-section {
+    height: 60vh;
+  }
+
+  .choice-content h1 {
+    font-size: 2rem;
+  }
+
+  .choice-tagline {
+    font-size: 1rem;
+  }
+
+  .choice-btn {
+    width: 250px;
+    height: 350px;
+  }
+
+  .choice-btn span {
+    font-size: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .diet-content {
+    padding: 15px;
+  }
+
+  .meal-option h4 {
+    font-size: 1.4rem;
+  }
+}

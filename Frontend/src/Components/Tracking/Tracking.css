@@ -1,0 +1,181 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.tracking-page {
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+                url('https://img.freepik.com/free-vector/abstract-big-data-digital-technology-background-design_1017-22920.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.tracking-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for Sleep, Water, and Calories */
+    grid-template-rows: minmax(300px, 1fr);
+    gap: 1.5rem;
+    width: 95%;
+    max-width: 1800px;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.tracking-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.tracking-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-color);
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.tracking-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card-content {
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-icon-wrapper {
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    color: var(--card-color);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: var(--card-color);
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+/* Sleep Card */
+.sleep-card {
+    --card-color: #4caf50; /* Green */
+}
+
+.sleep-card .card-icon-wrapper {
+    content: url('path-to-sleep-icon.svg'); /* Replace with the actual path to the sleep icon */
+}
+
+/* Water Card */
+.water-card {
+    --card-color: #2196f3; /* Blue */
+}
+
+.water-card .card-icon-wrapper {
+    content: url('path-to-water-icon.svg'); /* Replace with the actual path to the water icon */
+}
+
+/* Calories Card */
+.calories-card {
+    --card-color: #ff5722; /* Orange */
+}
+
+.calories-card .card-icon-wrapper {
+    content: url('path-to-calories-icon.svg'); /* Replace with the actual path to the calories icon */
+}
+
+@media (max-width: 1200px) {
+    .tracking-grid {
+        grid-template-columns: repeat(2, 1fr); /* Adjust to 2 columns for smaller screens */
+        grid-template-rows: repeat(2, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .tracking-page {
+        padding: 1rem;
+        height: auto;
+        position: absolute;
+    }
+
+    .tracking-grid {
+        grid-template-columns: 1fr; /* Single column for mobile */
+        grid-template-rows: repeat(3, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+        margin: 60px 0;
+    }
+
+    .card-content {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+    }
+
+    .card-description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1800px) {
+    .tracking-grid {
+        max-width: 2000px;
+    }
+}

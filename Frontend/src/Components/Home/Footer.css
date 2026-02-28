@@ -1,0 +1,98 @@
+.footer {
+    background-color: #0d1117;
+    /* Matches new premium dark theme */
+    color: #8b949e;
+    padding: 80px 50px 40px;
+    font-family: 'Montserrat', sans-serif;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    /* Subtle glowing border */
+    position: relative;
+    z-index: 10;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column.branding h2 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 15px;
+    color: #fff;
+    letter-spacing: -1px;
+}
+
+.footer-column.branding h2 strong {
+    font-weight: 800;
+    color: #fff;
+}
+
+.red-dot {
+    color: #00e676;
+    /* Changed to match the new vibrant accent */
+}
+
+.no-pain {
+    font-size: 0.95rem;
+    color: #8b949e;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+.footer-column h3 {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 15px;
+}
+
+.footer-column ul li a {
+    color: #8b949e;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.footer-column ul li a:hover {
+    color: #00e676;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 50px 30px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+    }
+
+    .footer-column {
+        margin-bottom: 30px;
+    }
+}

@@ -1,0 +1,242 @@
+/* CommunityChat.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Styles */
+.community-chat-page {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7f5;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* Chat Header Section */
+.chat-header {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(to bottom, #f5f7f5, #ffffff);
+}
+
+.chat-header h1 {
+  color: #2e7d32;
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+}
+
+.chat-intro {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #5a7d5c;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* Chat Section */
+.chat-section {
+  max-width: 1280px;
+  margin: 0 auto 100px;
+  padding: 0 20px;
+  background: #ffffff;
+}
+
+.chat-container {
+  border: 1px solid #e6e6e6;
+  border-radius: 20px;
+  padding: 30px;
+  min-height: 400px;
+  max-height: 600px;
+  overflow-y: auto;
+  background: #f9fcf9;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Chat Messages */
+.chat-message {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.community-message {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 12px 20px;
+  border-radius: 15px;
+  background: #e6e6e6;
+  color: #333;
+  position: relative;
+}
+
+.user-message .message-content {
+  background: linear-gradient(90deg, #34c759, #28a745);
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+
+.community-message .message-content {
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-bottom-left-radius: 5px;
+}
+
+.message-content strong {
+  font-weight: 600;
+  color: inherit;
+}
+
+.message-timestamp {
+  display: block;
+  font-size: 0.85rem;
+  color: #8a9a8b;
+  margin-top: 5px;
+  opacity: 0.8;
+}
+
+.user-message .message-timestamp {
+  color: #d4f0d8;
+}
+
+.no-messages {
+  text-align: center;
+  color: #5a7d5c;
+  font-size: 1.2rem;
+  margin: 40px 0;
+}
+
+/* Chat Form */
+.chat-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-input {
+  width: 100%;
+  max-width: 600px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  background: #f9fcf9;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #34c759;
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.3);
+}
+
+.chat-input::placeholder {
+  color: #8a9a8b;
+}
+
+.view-diet-btn.send-btn {
+  padding: 12px 30px;
+  background: linear-gradient(90deg, #34c759, #28a745);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 199, 89, 0.2);
+}
+
+.view-diet-btn.send-btn:hover {
+  background: linear-gradient(90deg, #28a745, #34c759);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(52, 199, 89, 0.4);
+}
+
+.view-diet-btn.send-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .chat-header h1 {
+    font-size: 3rem;
+  }
+
+  .chat-intro {
+    font-size: 1.2rem;
+  }
+
+  .chat-container {
+    min-height: 350px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .chat-intro {
+    font-size: 1.1rem;
+  }
+
+  .chat-container {
+    min-height: 300px;
+    max-height: 400px;
+    padding: 20px;
+  }
+
+  .chat-form {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .chat-input {
+    max-width: 100%;
+    padding: 10px 15px;
+  }
+
+  .view-diet-btn.send-btn {
+    padding: 10px 25px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-header h1 {
+    font-size: 2rem;
+  }
+
+  .chat-intro {
+    font-size: 1rem;
+  }
+
+  .chat-container {
+    min-height: 250px;
+    max-height: 350px;
+  }
+
+  .message-content {
+    max-width: 85%;
+    padding: 10px 15px;
+  }
+}

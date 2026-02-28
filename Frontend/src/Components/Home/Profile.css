@@ -1,0 +1,139 @@
+/* Update background image and gradient */
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+                url('https://t3.ftcdn.net/jpg/08/27/87/60/360_F_827876077_k0EWo3jSiWZPR8fRgsSbZFT9SkrozNuj.jpg') center/cover no-repeat fixed;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  
+  /* Update profile card styling */
+  .profile-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 40px;
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideIn 0.6s ease;
+    margin-bottom: 40px;
+  }
+  
+  /* Update grid layout for side-by-side entries */
+  .profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    padding: 20px 0;
+    width: 100%;
+  }
+  
+  /* Update info group styling */
+  .info-group {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 25px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .info-group:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(46, 204, 113, 0.3);
+  }
+  
+  /* Update input styling */
+  .info-group input,
+  .info-group select,
+  .info-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  /* Update header styling */
+  .profile-header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    color: #2ecc71;
+  }
+  
+  /* Update media queries for responsive layout */
+  @media (max-width: 1024px) {
+    .profile-info {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-info {
+      grid-template-columns: 1fr;
+    }
+    
+    .profile-card {
+      padding: 25px;
+    }
+    
+    .info-group {
+      padding: 20px;
+    }
+  }
+  
+  /* Update button styling */
+  .health-form-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    padding: 12px 24px; /* Reduced padding for a more compact look */
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 8px; /* Reduced from 50px to a standard corner radius */
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content; /* Ensures the button fits its content */
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    z-index: 1000;
+}
+.back-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 8px; /* Reduced from 50px to a standard corner radius */
+    padding: 12px 24px; /* Reduced padding for a more compact look */
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content; /* Ensures the button fits its content */
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    z-index: 1000;
+}
+
+.health-form-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5);
+    background: linear-gradient(135deg, #27ae60, #219a52);
+}

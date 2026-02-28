@@ -1,0 +1,292 @@
+/* FoodLog.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Container */
+.diet-container {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f5f7f5;
+}
+
+/* Heading */
+.diet-container h1 {
+  text-align: center;
+  color: #fff; /* White for high visibility */
+  background: linear-gradient(90deg, #2e7d32, #355e3b); /* Dark green gradient background */
+  padding: 15px 30px;
+  margin-bottom: 20px;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border-radius: 10px;
+}
+
+.diet-container h1::after {
+  content: '';
+  width: 100px;
+  height: 5px;
+  background: linear-gradient(90deg, #34c759, #28a745);
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+
+/* Intro Text */
+.diet-intro {
+  text-align: center;
+  color: #5a7d5c;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+/* Form Container */
+.food-log-form {
+  padding: 40px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(53, 94, 59, 0.15);
+  max-width: 550px;
+  margin: 0 auto 40px;
+  border: 2px solid #d4e4d5;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.food-log-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(53, 94, 59, 0.2);
+}
+
+.food-log-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #34c759, #28a745);
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 25px;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group label {
+  display: block;
+  color: #2e7d32;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.form-group select,
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #d4e4d5;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #355e3b;
+  background: #f9fcf9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group select:focus,
+.form-group input[type="text"]:focus {
+  border-color: #34c759;
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
+  background: #fff;
+  outline: none;
+}
+
+.form-group select {
+  appearance: none;
+  background: #f9fcf9 url('data:image/svg+xml;utf8,<svg fill="%232e7d32" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.form-group input[type="text"]::placeholder {
+  color: #a3b9a4;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Button */
+.view-diet-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 15px;
+  background: linear-gradient(90deg, #34c759, #28a745);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  box-shadow: 0 3px 10px rgba(52, 199, 89, 0.2);
+}
+
+.view-diet-btn:hover {
+  background: linear-gradient(90deg, #28a745, #34c759);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(52, 199, 89, 0.4);
+}
+
+/* Diet Grid */
+.diet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 35px;
+  padding: 20px 0;
+}
+
+.no-logs {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #5a7d5c;
+  font-size: 1.2rem;
+  font-style: italic;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(53, 94, 59, 0.15);
+}
+
+/* Diet Card */
+.diet-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(53, 94, 59, 0.15);
+  border: 2px solid #d4e4d5;
+  transition: all 0.3s ease;
+}
+
+.diet-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(53, 94, 59, 0.25);
+}
+
+.diet-content {
+  padding: 25px;
+}
+
+.diet-content h2 {
+  color: #2e7d32;
+  margin-bottom: 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.diet-content p {
+  color: #5a7d5c;
+  margin-bottom: 18px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.log-date {
+  color: #a3b9a4;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .diet-container {
+    padding: 25px 15px;
+  }
+
+  .diet-container h1 {
+    font-size: 2.2rem;
+    padding: 12px 25px;
+  }
+
+  .diet-container h1::after {
+    width: 80px;
+    height: 4px;
+  }
+
+  .diet-intro {
+    font-size: 1rem;
+  }
+
+  .food-log-form {
+    padding: 25px;
+    max-width: 90%;
+    margin-bottom: 30px;
+  }
+
+  .form-group,
+  .view-diet-btn {
+    max-width: 100%;
+  }
+
+  .diet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .diet-container h1 {
+    font-size: 2rem;
+    padding: 10px 20px;
+  }
+
+  .diet-intro {
+    font-size: 0.95rem;
+  }
+
+  .food-log-form {
+    padding: 20px;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group select,
+  .form-group input[type="text"] {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .view-diet-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .diet-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .diet-content p {
+    font-size: 0.95rem;
+  }
+
+  .log-date {
+    font-size: 0.85rem;
+  }
+}

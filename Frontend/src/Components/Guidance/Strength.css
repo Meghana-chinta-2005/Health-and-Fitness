@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.strength-tutorials-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Background with overlay */
+.strength-tutorials-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+              url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFYC7SDNVfIZ15Wmek4-7GNniOiBYE7BXH0w&s') center/cover no-repeat;
+  z-index: -1;
+  transform: scale(1.1);
+}
+  
+.strength-categories {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+  
+  
+  .category-section {
+    width: 100%;
+  }
+  
+  .category-title {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+  
+  .scrollable-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #00695c #1a1a1a;
+  }
+  
+  .scrollable-row::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .scrollable-row::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+  
+  .scrollable-row::-webkit-scrollbar-thumb {
+    background: #00695c;
+    border-radius: 4px;
+  }
+  
+  .tutorial-card {
+    flex: 0 0 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .tutorial-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .thumbnail-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+  
+  .thumbnail-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .tutorial-info {
+    padding: 1rem;
+  }
+  
+  .tutorial-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+  }
+  
+  .tutorial-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #cccccc;
+  }
+  
+  .video-player-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+  
+  .video-player {
+    position: relative;
+    padding-top: 56.25%;
+    width: 100%;
+  }
+  
+  .video-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .close-video-btn, .back-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    margin: 1rem 0;
+    background: #00695c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .close-video-btn:hover, .back-btn:hover {
+    background: #004d40;
+  }
+  
+  @media (max-width: 768px) {
+    .strength-tutorials-page {
+      padding: 1rem;
+    }
+    
+    .tutorial-card {
+      flex: 0 0 250px;
+    }
+  }

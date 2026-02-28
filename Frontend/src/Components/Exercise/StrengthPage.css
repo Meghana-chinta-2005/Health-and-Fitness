@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('../assets/fitness.avif') 
+              center/cover no-repeat fixed;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.strength-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+.strength-page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('../assets/fitness.avif') 
+              center/cover no-repeat;
+  z-index: -1;
+}
+
+.strength-page h2 {
+  font-size: 2.5rem;
+  color: #ffffff; /* Retained for contrast */
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.strength-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.strength-category-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.strength-category-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.category-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.strength-category-card:hover .category-image img {
+  transform: scale(1.1);
+}
+
+.category-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+}
+
+.category-overlay h3 {
+  color: #ffffff; /* Retained for contrast */
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.category-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category-content p {
+  color: #ffffff; /* Retained for contrast */
+  margin-bottom: 15px;
+  line-height: 1.6;
+  font-size: 1.25rem;
+}
+
+.view-exercises-btn {
+  width: 100%;
+  padding: 12px 25px;
+  background: #004d40; /* From Home.css */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-exercises-btn:hover {
+  background: #00695c; /* From Home.css */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 77, 64, 0.3); /* Adjusted to match Home.css */
+}
+
+.back-btn {
+  display: block;
+  margin: 40px auto 20px;
+  padding: 15px 30px;
+  background: #004d40; /* From Home.css instead of green */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #00695c; /* From Home.css instead of green */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 77, 64, 0.3); /* Adjusted to match Home.css */
+}
+
+@media (max-width: 1200px) {
+  .strength-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .strength-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .strength-page h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .strength-category-card {
+    height: auto;
+    min-height: 380px;
+  }
+
+  .category-image {
+    height: 180px;
+  }
+
+  .back-btn {
+    margin: 30px auto;
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+
+.view-exercises-btn:focus,
+.back-btn:focus {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #004d40; /* From Home.css */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00695c; /* From Home.css */
+}
