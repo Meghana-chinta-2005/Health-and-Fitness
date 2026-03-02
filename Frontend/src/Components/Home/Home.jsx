@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/logo.jpg";
 import "./Home.css";
 import Footer from "./Footer";
 
 function Home() {
+  const { isAuthenticated, user: authUser, logout: authLogout } = useAuth();
   const [nav, setNav] = useState(false);
-  const [username, setUsername] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
   const navigate = useNavigate();
-  const usernameRef = useRef(null); // Ref to track the username element
+  const usernameRef = useRef(null);
 
   const changeBackground = () => {
     setNav(window.scrollY >= 50);
@@ -19,10 +20,6 @@ function Home() {
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
     return () => window.removeEventListener("scroll", changeBackground);
   }, []);
 
@@ -38,14 +35,10 @@ function Home() {
   }, [showDropdown]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("username");
-    localStorage.removeItem("email");
-    setUsername(null);
+    authLogout();
     setShowDropdown(false);
     setMobileMenuOpen(false);
-    navigate("/");
+    navigate("/"); // Ensures navigation to home showing login button
   };
 
   const handleProfile = () => {
@@ -97,31 +90,20 @@ function Home() {
           </button>
           <div className="nav-right">
             <ul className={`menu ${mobileMenuOpen ? "active" : ""}`}>
-              {username ? (
+              {isAuthenticated ? (
                 <li>
                   <div className="user-menu">
-                    <span
-                      className="username login-button"
+                    <div
+                      className="user-avatar"
                       ref={usernameRef}
                       onClick={() => setShowDropdown(!showDropdown)}
                     >
-                      {username} ⏷
-                    </span>
+                      {authUser ? authUser.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
+                    </div>
                   </div>
                 </li>
               ) : (
                 <>
-                  <li>
-                    <div className="user-menu">
-                      <span
-                        className="username"
-                        ref={usernameRef}
-                        onClick={() => setShowDropdown(!showDropdown)}
-                      >
-                        Explore Features ⏷
-                      </span>
-                    </div>
-                  </li>
                   <li>
                     <button
                       className="login-button"
@@ -150,15 +132,15 @@ function Home() {
             right: `${dropdownPosition.right}px`,
           }}
         >
-          {username && <button onClick={handleProfile}>Profile</button>}
-          {username && <button onClick={handleArenaClick}>Arena</button>}
+          {isAuthenticated && <button onClick={handleProfile}>Profile</button>}
+          {isAuthenticated && <button onClick={handleArenaClick}>Arena</button>}
 
           <button onClick={handleExerciseClick}>Exercises</button>
           <button onClick={handleDietClick}>Diet</button>
           <button onClick={handleTrackingClick}>Tracking</button>
           <button onClick={handleGuidanceClick}>Guidance System</button>
 
-          {username && <button onClick={handleLogout} className="logout-btn">Sign Out</button>}
+          {isAuthenticated && <button onClick={handleLogout} className="logout-btn">Sign Out</button>}
         </div>
       )}
 
@@ -179,8 +161,14 @@ function Home() {
               Transform Your Lifestyle with Fitify! We provide a personalized platform designed to help you crush your wellness goals through smart tracking, tailored workouts, and expert guidance.
             </p>
             <div className="cta-buttons">
-              <button className="btn-primary" onClick={() => navigate('/login')}>Get Started Today</button>
-              <button className="btn-secondary" onClick={handleExerciseClick}>Explore Features</button>
+              {!isAuthenticated && (
+                <button className="btn-primary" onClick={() => navigate('/login')}>
+                  Get Started
+                </button>
+              )}
+              <button className="btn-secondary" onClick={handleExerciseClick}>
+                Explore Features
+              </button>
             </div>
           </div>
         </section>

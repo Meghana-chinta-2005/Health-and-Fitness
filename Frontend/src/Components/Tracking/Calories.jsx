@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { FaFire, FaChevronLeft } from 'react-icons/fa';
 import './Calories.css';
 
@@ -36,56 +37,85 @@ const foodData = {
 
 const Calories = () => {
   const navigate = useNavigate();
-  const [calorieData, setCalorieData] = useState({
+  const [calories, setCalories] = useState(0);
+  const [calorieLog, setCalorieLog] = useState([]);
+  const [formData, setFormData] = useState({
     food: '',
-    calories: 0,
+    calories: '',
     mealType: 'breakfast',
-    date: new Date().toISOString().split('T')[0],
     isCustom: false
   });
 
-  const [calorieLog, setCalorieLog] = useState([]);
-
   useEffect(() => {
-    const savedLog = localStorage.getItem('calorieLog');
-    if (savedLog) {
-      setCalorieLog(JSON.parse(savedLog));
-    }
+    fetchCalorieHistory();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const foodCalories = calorieData.isCustom ? parseInt(calorieData.calories) : foodData[calorieData.mealType]?.find(food => food.name === calorieData.food)?.calories;
-    if (!foodCalories) return alert('Please select a valid food item or enter correct custom values.');
-
-    const newEntry = {
-      ...calorieData,
-      calories: foodCalories,
-      id: Date.now(),
-      time: new Date().toLocaleTimeString()
-    };
-
-    const updatedLog = [newEntry, ...calorieLog];
-    setCalorieLog(updatedLog);
-    localStorage.setItem('calorieLog', JSON.stringify(updatedLog));
-    alert(`Added ${calorieData.food} with ${foodCalories} calories.`);
+  const fetchCalorieHistory = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/tracking/calories', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCalorieLog(response.data);
+      const total = response.data.reduce((sum, item) => sum + item.calories, 0);
+      setCalories(total);
+    } catch (error) {
+      console.error('Error fetching calorie history:', error);
+    }
   };
 
-  const handleResetHistory = () => {
-    if (window.confirm('Are you sure you want to clear all calorie history?')) {
-      setCalorieLog([]);
-      localStorage.removeItem('calorieLog');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let foodName = formData.food;
+    let foodCalories = parseInt(formData.calories);
+
+    if (!formData.isCustom) {
+      const selectedFood = foodData[formData.mealType].find(f => f.name === foodName);
+      if (selectedFood) {
+        foodCalories = selectedFood.calories;
+      }
+    }
+
+    if (!foodName || isNaN(foodCalories)) {
+      return alert('Please select a valid food item or enter custom values.');
+    }
+
+    const newEntry = {
+      foodItem: foodName,
+      calories: foodCalories,
+      mealType: formData.mealType,
+      date: new Date().toLocaleDateString(),
+      timestamp: new Date().toLocaleTimeString()
+    };
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:5000/api/tracking/calories', newEntry, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setCalorieLog(prev => [response.data, ...prev]);
+      setCalories(prev => prev + foodCalories);
+      setFormData({ ...formData, food: '', calories: '', isCustom: false });
+      alert(`Added ${foodName} with ${foodCalories} calories.`);
+    } catch (error) {
+      console.error('Error saving calories:', error);
+      alert('Failed to save calorie data. Please try again.');
     }
   };
 
   const handleFoodChange = (e) => {
     const value = e.target.value;
     if (value === 'custom') {
-      setCalorieData({ ...calorieData, isCustom: true, food: '', calories: '' });
+      setFormData({ ...formData, isCustom: true, food: '', calories: '' });
     } else {
-      setCalorieData({ ...calorieData, isCustom: false, food: value, calories: 0 });
+      setFormData({ ...formData, isCustom: false, food: value, calories: '' });
     }
+  };
+
+  const handleResetHistory = () => {
+    alert('Clear History is managed in the database for tracking your progress.');
   };
 
   return (
@@ -97,26 +127,38 @@ const Calories = () => {
 
         <form onSubmit={handleSubmit}>
           <label>Meal Type</label>
-          <select value={calorieData.mealType} onChange={(e) => setCalorieData({ ...calorieData, mealType: e.target.value })}>
+          <select value={formData.mealType} onChange={(e) => setFormData({ ...formData, mealType: e.target.value })}>
             {Object.keys(foodData).map(meal => <option key={meal} value={meal}>{meal}</option>)}
           </select>
 
           <label>Food Item</label>
-          <select onChange={handleFoodChange} value={calorieData.isCustom ? 'custom' : calorieData.food}>
+          <select onChange={handleFoodChange} value={formData.isCustom ? 'custom' : formData.food}>
             <option value="">Select Food</option>
-            {foodData[calorieData.mealType]?.map(food => (
+            {foodData[formData.mealType].map(food => (
               <option key={food.name} value={food.name}>{food.name}</option>
             ))}
             <option value="custom">Custom Food</option>
           </select>
 
-          {calorieData.isCustom && (
+          {formData.isCustom && (
             <>
               <label>Custom Food Name</label>
-              <input type="text" value={calorieData.food} onChange={(e) => setCalorieData({ ...calorieData, food: e.target.value })} />
+              <input
+                type="text"
+                value={formData.food}
+                onChange={(e) => setFormData({ ...formData, food: e.target.value })}
+                placeholder="Enter food name"
+                required
+              />
 
               <label>Calories</label>
-              <input type="number" value={calorieData.calories} onChange={(e) => setCalorieData({ ...calorieData, calories: e.target.value })} />
+              <input
+                type="number"
+                value={formData.calories}
+                onChange={(e) => setFormData({ ...formData, calories: e.target.value })}
+                placeholder="Enter calorie amount"
+                required
+              />
             </>
           )}
 
@@ -127,14 +169,12 @@ const Calories = () => {
 
         <h2>Calorie Log</h2>
         <ul>
-          {calorieLog.map(entry => (
-            <li key={entry.id}>
-              {entry.food} - {entry.calories} calories ({entry.mealType}) on {entry.date} at {entry.time}
+          {calorieLog.map((entry, index) => (
+            <li key={entry._id || index}>
+              {entry.foodItem} - {entry.calories} calories ({entry.mealType}) on {entry.date} at {entry.timestamp}
             </li>
           ))}
         </ul>
-
-        {/* <button onClick={() => navigate(-1)} className="back-button"><FaChevronLeft /> Back to Tracking Page</button> */}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { FaMoon, FaBed, FaClock, FaChevronLeft, FaTrash } from 'react-icons/fa';
 import './Sleep.css';
 
@@ -10,23 +11,27 @@ const Sleep = () => {
     wakeTime: '',
   });
   const [sleepLog, setSleepLog] = useState([]);
-  const [sleepQuality, setSleepQuality] = useState({ 
+  const [sleepQuality, setSleepQuality] = useState({
     score: 0,
-    suggestions: [], 
-    duration: 0 
+    suggestions: [],
+    duration: 0
   });
 
   useEffect(() => {
-    try {
-      const savedLog = localStorage.getItem('sleepLog');
-      if (savedLog) {
-        setSleepLog(JSON.parse(savedLog));
-      }
-    } catch (error) {
-      console.error('Error loading sleep log:', error);
-      localStorage.removeItem('sleepLog');
-    }
+    fetchSleepHistory();
   }, []);
+
+  const fetchSleepHistory = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/tracking/sleep', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSleepLog(response.data);
+    } catch (error) {
+      console.error('Error fetching sleep history:', error);
+    }
+  };
 
   const calculateSleepQuality = (bedTime, wakeTime) => {
     if (!bedTime || !wakeTime) return { score: 0, suggestions: [], duration: 0 };
@@ -66,7 +71,7 @@ const Sleep = () => {
     };
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const quality = calculateSleepQuality(
       sleepData.bedTime,
@@ -74,25 +79,30 @@ const Sleep = () => {
     );
 
     const newEntry = {
-      ...sleepData,
+      bedTime: sleepData.bedTime,
+      wakeTime: sleepData.wakeTime,
       date: new Date().toLocaleDateString(),
       quality: quality.score,
-      duration: quality.duration,
-      id: Date.now()
+      hours: parseFloat(quality.duration)
     };
 
-    setSleepQuality(quality);
-    setSleepLog([newEntry, ...sleepLog]);
-    localStorage.setItem('sleepLog', JSON.stringify([newEntry, ...sleepLog]));
-    
-    setSleepData({ bedTime: '', wakeTime: '' }); // Reset form
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:5000/api/tracking/sleep', newEntry, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setSleepQuality(quality);
+      setSleepLog(prev => [response.data, ...prev]);
+      setSleepData({ bedTime: '', wakeTime: '' }); // Reset form
+    } catch (error) {
+      console.error('Error saving sleep:', error);
+      alert('Failed to save sleep data. Please try again.');
+    }
   };
 
   const handleResetHistory = () => {
-    if (window.confirm('Are you sure you want to clear all sleep history? This cannot be undone.')) {
-      setSleepLog([]);
-      localStorage.removeItem('sleepLog');
-    }
+    alert('Clear History is currently disabled. Sleep data is saved in MongoDB for your health analysis.');
   };
 
   const getQualityColor = (score) => {
@@ -117,7 +127,7 @@ const Sleep = () => {
                 type="time"
                 required
                 value={sleepData.bedTime}
-                onChange={(e) => setSleepData({...sleepData, bedTime: e.target.value})}
+                onChange={(e) => setSleepData({ ...sleepData, bedTime: e.target.value })}
               />
             </div>
 
@@ -127,7 +137,7 @@ const Sleep = () => {
                 type="time"
                 required
                 value={sleepData.wakeTime}
-                onChange={(e) => setSleepData({...sleepData, wakeTime: e.target.value})}
+                onChange={(e) => setSleepData({ ...sleepData, wakeTime: e.target.value })}
               />
             </div>
           </div>
@@ -138,7 +148,7 @@ const Sleep = () => {
         {sleepQuality.score > 0 && (
           <div className="sleep-quality-results">
             <h2>Sleep Analysis</h2>
-            <div className="quality-score" style={{ 
+            <div className="quality-score" style={{
               backgroundColor: `${getQualityColor(sleepQuality.score)}22`,
               borderColor: getQualityColor(sleepQuality.score)
             }}>
@@ -151,7 +161,7 @@ const Sleep = () => {
                 <span className="duration-value">{sleepQuality.duration}h</span>
               </div>
             </div>
-            
+
             {sleepQuality.suggestions.length > 0 && (
               <div className="suggestions">
                 <h3>Recommendations</h3>
@@ -184,7 +194,7 @@ const Sleep = () => {
                 <div className="entry-details">
                   <span>Bed: {entry.bedTime}</span>
                   <span>Wake: {entry.wakeTime}</span>
-                  <span className="quality-badge" 
+                  <span className="quality-badge"
                     style={{ backgroundColor: getQualityColor(entry.quality) }}>
                     Rating: {entry.quality}/10
                   </span>

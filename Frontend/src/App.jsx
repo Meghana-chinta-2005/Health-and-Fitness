@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import Home from "./Components/Home/Home";
 import LoginForm from "./Components/LoginForm/LoginForm";
 import Dashboard from "./Components/Home/Arena";
@@ -50,9 +50,8 @@ import MobilityTraining from './Components/Exercise/MobilityTraining';
 import PNFStretching from './Components/Exercise/PNFStretching';
 import Cycling from "./Components/Exercise/cycling";
 
-
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+function AppContent() {
+  const { isAuthenticated } = useAuth();
 
   return (
     <Router>
@@ -98,8 +97,6 @@ function App() {
           <Route path="/exercise/strength/legs" element={<Legs />} />
           <Route path="/exercise/strength/forearms" element={<Forearms />} />
 
-
-
           {/* Cardio Routes */}
           <Route path="/exercise/cardio/running" element={<Running />} />
           <Route path="/exercise/cardio/cycling" element={<Cycling />} />
@@ -108,14 +105,14 @@ function App() {
           <Route path="/exercise/cardio/jump-rope" element={<JumpRope />} />
           <Route path="/exercise/cardio/stair-climbing" element={<StairClimbing />} />
 
-
           {/* Flexibility Routes */}
-          <Route path="/exercise/flexibility/yogas" element={<Yogas />} /> // Update path from yoga to yogas
-          <Route path="/exercise/flexibility/dynamic-stretching" element={<DynamicStretching />} /> // Update path from dynamic-stretching to dynamicstretching
+          <Route path="/exercise/flexibility/yogas" element={<Yogas />} />
+          <Route path="/exercise/flexibility/dynamic-stretching" element={<DynamicStretching />} />
           <Route path="/exercise/flexibility/static-stretching" element={<StaticStretching />} />
           <Route path="/exercise/flexibility/pilates" element={<Pilates />} />
           <Route path="/exercise/flexibility/mobility-training" element={<MobilityTraining />} />
           <Route path="/exercise/flexibility/pnf-stretching" element={<PNFStretching />} />
+
           {/* Protected Routes */}
           <Route
             path="/dashboard"
@@ -124,7 +121,6 @@ function App() {
 
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/tracking/water" element={<Water />} />
-
           <Route path="/tracking/sleep" element={<Sleep />} />
           <Route path="/tracking/calories" element={<Calories />} />
 
@@ -133,6 +129,14 @@ function App() {
         </Routes>
       </div>
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Water.css';
 
 const Water = () => {
@@ -10,37 +11,48 @@ const Water = () => {
   const [customAmount, setCustomAmount] = useState('');
 
   useEffect(() => {
-    const savedWaterIntake = localStorage.getItem('waterIntake');
-    const savedWaterLog = localStorage.getItem('waterLog');
-    const today = new Date().toLocaleDateString();
-    
-    if (savedWaterIntake) {
-      const savedDate = localStorage.getItem('lastTrackedDate');
-      if (savedDate === today) {
-        setWaterIntake(parseInt(savedWaterIntake));
-        if (savedWaterLog) setWaterLog(JSON.parse(savedWaterLog));
-      } else {
-        resetWaterIntake();
-      }
-    }
+    fetchWaterData();
   }, []);
 
-  const handleAddWater = (amount) => {
-    const newTotal = waterIntake + amount;
-    const now = new Date();
-    
-    const newLog = [...waterLog, {
-      amount,
-      date: now.toLocaleDateString(),
-      timestamp: now.toLocaleTimeString(),
-      total: newTotal
-    }];
-    
-    setWaterLog(newLog);
-    setWaterIntake(newTotal);
-    localStorage.setItem('waterIntake', newTotal);
-    localStorage.setItem('waterLog', JSON.stringify(newLog));
-    localStorage.setItem('lastTrackedDate', now.toLocaleDateString());
+  const fetchWaterData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const today = new Date().toLocaleDateString();
+      const response = await axios.get(`http://localhost:5000/api/tracking/water?date=${today}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const logs = response.data;
+      setWaterLog(logs);
+      const total = logs.reduce((sum, log) => sum + log.amount, 0);
+      setWaterIntake(total);
+    } catch (error) {
+      console.error('Error fetching water data:', error);
+    }
+  };
+
+  const handleAddWater = async (amount) => {
+    try {
+      const token = localStorage.getItem('token');
+      const now = new Date();
+      const newEntry = {
+        amount,
+        date: now.toLocaleDateString(),
+        timestamp: now.toLocaleTimeString()
+      };
+
+      const response = await axios.post('http://localhost:5000/api/tracking/water', newEntry, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // Update local state with the saved entry from backend
+      const savedEntry = { ...response.data, total: waterIntake + amount };
+      setWaterLog(prev => [...prev, savedEntry]);
+      setWaterIntake(prev => prev + amount);
+    } catch (error) {
+      console.error('Error adding water:', error);
+      alert('Failed to save water intake. Please try again.');
+    }
   };
 
   const handleCustomAmountChange = (e) => {
@@ -57,11 +69,10 @@ const Water = () => {
   };
 
   const resetWaterIntake = () => {
+    // For now, we'll just reset the local view for the day. 
+    // In a real app, you might want a 'clear' API, but usually history is kept.
     setWaterIntake(0);
     setWaterLog([]);
-    localStorage.setItem('waterIntake', 0);
-    localStorage.setItem('waterLog', JSON.stringify([]));
-    localStorage.setItem('lastTrackedDate', new Date().toLocaleDateString());
   };
 
   return (
@@ -75,8 +86,8 @@ const Water = () => {
         <div className="water-tracking-card">
           <div className="water-progress">
             <div className="water-glass">
-              <div 
-                className="water-fill" 
+              <div
+                className="water-fill"
                 style={{ height: `${Math.min((waterIntake / dailyGoal) * 100, 100)}%` }}
               />
               <div className="water-content">
@@ -114,7 +125,7 @@ const Water = () => {
                 }
               }}
             />
-            <button 
+            <button
               className="add-custom-btn"
               onClick={handleAddCustomAmount}
               disabled={!customAmount}

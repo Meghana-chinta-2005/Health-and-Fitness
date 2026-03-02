@@ -1,51 +1,58 @@
-// FoodLog.jsx
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './FoodLog.css';
 
 const FoodLog = () => {
-  const [logs, setLogs] = useState(() => {
-    try {
-      const savedLogs = localStorage.getItem('foodLogs');
-      return savedLogs ? JSON.parse(savedLogs) : [];
-    } catch (error) {
-      console.error('Error parsing foodLogs from localStorage:', error);
-      return [];
-    }
-  });
+  const [logs, setLogs] = useState([]);
   const [meal, setMeal] = useState({ time: '', description: '', quantity: '' });
 
   useEffect(() => {
+    fetchFoodLogs();
+  }, []);
+
+  const fetchFoodLogs = async () => {
     try {
-      localStorage.setItem('foodLogs', JSON.stringify(logs));
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/diet/foodlog', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setLogs(response.data);
     } catch (error) {
-      console.error('Error saving foodLogs to localStorage:', error);
+      console.error('Error fetching food logs:', error);
     }
-  }, [logs]);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMeal((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!meal.time || !meal.description || !meal.quantity) {
       alert('Please fill in all fields.');
       return;
     }
 
-    const newLog = {
-      ...meal,
-      date: new Date().toISOString(),
+    const payload = {
+      mealTime: meal.time,
+      description: meal.description,
+      quantity: meal.quantity
     };
 
-    setLogs((prev) => {
-      const updatedLogs = [...prev, newLog];
-      console.log('Updated logs:', updatedLogs); // Debug log
-      return updatedLogs;
-    });
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:5000/api/diet/foodlog', payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-    setMeal({ time: '', description: '', quantity: '' });
+      setLogs((prev) => [response.data, ...prev]);
+      setMeal({ time: '', description: '', quantity: '' });
+      alert('Food logged successfully!');
+    } catch (error) {
+      console.error('Error submitting food log:', error);
+      alert('Failed to log food. Please try again.');
+    }
   };
 
   return (
@@ -98,15 +105,15 @@ const FoodLog = () => {
           <p>No food logs yet. Start logging your meals above!</p>
         ) : (
           logs.map((log, index) => (
-            <div key={index} className="diet-card">
+            <div key={log._id || index} className="diet-card">
               <div className="diet-content">
-                <h2>{log.time}</h2>
+                <h2>{log.mealTime || log.time}</h2>
                 <p>{log.description}</p>
                 <p className="log-quantity">
                   <strong>Quantity:</strong> {log.quantity}
                 </p>
                 <p className="log-date">
-                  <small>{new Date(log.date).toLocaleString()}</small>
+                  <small>{new Date(log.createdAt || log.date).toLocaleString()}</small>
                 </p>
               </div>
             </div>

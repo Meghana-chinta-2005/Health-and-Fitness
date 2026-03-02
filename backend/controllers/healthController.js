@@ -2,12 +2,12 @@ const HealthForm = require("../models/HealthForm");
 
 exports.saveHealthForm = async (req, res) => {
     try {
-        const { user_id } = req.body;
+        const user_id = req.user; // From authMiddleware
 
         // Attempt to update if exists, otherwise create new
         const form = await HealthForm.findOneAndUpdate(
             { user_id },
-            { $set: req.body },
+            { $set: { ...req.body, user_id } },
             { new: true, upsert: true }
         );
 
@@ -20,10 +20,10 @@ exports.saveHealthForm = async (req, res) => {
 
 exports.getHealthForm = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const form = await HealthForm.findOne({ user_id: userId });
+        const user_id = req.user; // From authMiddleware
+        const form = await HealthForm.findOne({ user_id });
 
-        if (!form) return res.status(404).json({ detail: "Not found" });
+        if (!form) return res.status(404).json({ detail: "Health form not found" });
 
         res.status(200).json(form);
     } catch (error) {

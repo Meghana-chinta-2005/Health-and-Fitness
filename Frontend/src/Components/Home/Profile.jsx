@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import "./Profile.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [userId] = useState(localStorage.getItem("userId") || "");
+  const { userId, token } = useAuth();
   const [healthData, setHealthData] = useState({
     height: "",
     weight: "",
@@ -29,7 +30,7 @@ const Profile = () => {
   const calculateAge = (dob) => {
     if (!dob) return "";
     const birthDate = new Date(dob);
-    const today = new Date("2025-04-03"); // Current date as per system
+    const today = new Date(); // Current date
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
@@ -41,7 +42,6 @@ const Profile = () => {
   // Fetch health form data on mount
   useEffect(() => {
     const fetchHealthData = async () => {
-      const token = localStorage.getItem("token");
       if (!token || !userId) {
         alert("Please log in to view your profile!");
         navigate("/login");
@@ -134,9 +134,7 @@ const Profile = () => {
   };
 
   // Fetch diet and exercise predictions
-  // Fetch diet and exercise predictions
   const fetchPredictions = async (data) => {
-    const token = localStorage.getItem("token");
     if (!token) {
       alert("No authentication token found. Please log in.");
       navigate("/login");
@@ -259,7 +257,6 @@ const Profile = () => {
   // Save updated health data to backend
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         alert("No authentication token found. Please log in.");
         navigate("/login");
