@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./Style.css";
 import { useAuth } from "../../context/AuthContext";
 import { FaUser, FaLock, FaEnvelope, FaGoogle, FaFacebook, FaTwitter } from "react-icons/fa";
+import api from "../../utils/api";
+import "./Style.css";
 
-const LoginForm = ({ onAuthSuccess }) => {
+const LoginForm = ({ onAuthSuccess, initialIsRegister = false }) => {
   const { login } = useAuth();
-  const [isRegister, setIsRegister] = useState(false);
+  const [isRegister, setIsRegister] = useState(initialIsRegister);
+
+  useEffect(() => {
+    setIsRegister(initialIsRegister);
+  }, [initialIsRegister]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,22 +27,16 @@ const LoginForm = ({ onAuthSuccess }) => {
     });
   };
 
-  // ✅ Registration handler (UPDATED URL)
+  // ✅ Registration handler
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        formData
-      );
+      const response = await api.post("/auth/register", formData);
 
       console.log("Registration Response:", response.data);
       alert("Registration successful! Logging you in...");
-
-      // Auto login after registration if backend returns token/user or handle manually
-      // For now, let's just switch to login or handle logic
       setIsRegister(false);
       setFormData({ name: "", email: "", password: "" });
 
@@ -48,30 +46,27 @@ const LoginForm = ({ onAuthSuccess }) => {
     }
   };
 
-  // ✅ Login handler (UPDATED URL + token key)
+  // ✅ Login handler
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password
-        }
-      );
+      const response = await api.post("/auth/login", {
+        email: formData.email,
+        password: formData.password
+      });
 
       console.log("Login Response:", response.data);
 
-      // ✅ Changed from access_token to token
       if (response.data.token) {
-        // We need user name/id too. Assuming backend returns it or we fetch it.
-        // For now, use email as name if name not returned, or update backend later.
-        login({ name: response.data.username || formData.email, id: response.data.userId }, response.data.token);
+        login({
+          name: response.data.username || formData.email,
+          id: response.data.userId
+        }, response.data.token);
 
         if (onAuthSuccess) onAuthSuccess();
-        navigate("/"); // Redirection to home page showing the avatar
+        navigate("/");
 
       } else {
         setError("Login failed. Please try again.");
@@ -80,7 +75,6 @@ const LoginForm = ({ onAuthSuccess }) => {
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
       setError(error.response?.data?.message || "Invalid credentials. Please check your email and password.");
-      alert(error.response?.data?.message || "Login failed. Try again.");
     }
   };
 

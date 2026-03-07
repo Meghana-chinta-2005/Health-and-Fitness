@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../utils/api';
 import { FaFire, FaChevronLeft } from 'react-icons/fa';
 import './Calories.css';
 
@@ -52,10 +52,7 @@ const Calories = () => {
 
   const fetchCalorieHistory = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/tracking/calories', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/tracking/calories');
       setCalorieLog(response.data);
       const total = response.data.reduce((sum, item) => sum + item.calories, 0);
       setCalories(total);
@@ -90,10 +87,7 @@ const Calories = () => {
     };
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/tracking/calories', newEntry, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.post('/tracking/calories', newEntry);
 
       setCalorieLog(prev => [response.data, ...prev]);
       setCalories(prev => prev + foodCalories);

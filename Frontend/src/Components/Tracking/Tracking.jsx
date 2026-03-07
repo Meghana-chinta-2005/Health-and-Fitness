@@ -17,8 +17,8 @@ const Tracking = () => {
       goal: '2.0L',
       color: '#3498db'
     },
-   
-      
+
+
     {
       id: 'calories',
       title: 'Calories Count',
@@ -70,12 +70,12 @@ const Tracking = () => {
             </div>
           </div>
         ))}
-              <button
-        className="back-button"
-        onClick={() => navigate('/home')}
-      > Back to Home</button>
-    </div>
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+        > Back to Home</button>
       </div>
+    </div>
   );
 };
 export default Tracking;

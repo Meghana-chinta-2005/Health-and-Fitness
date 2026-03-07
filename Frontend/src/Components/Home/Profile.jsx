@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import axios from "axios";
+import api from "../../utils/api";
 import "./Profile.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { userId, token } = useAuth();
+  const { userId, token, logout } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [healthData, setHealthData] = useState({
+    name: "",
+    email: "",
+    phone: "",
     height: "",
     weight: "",
     medicalConditions: [],
@@ -43,19 +47,13 @@ const Profile = () => {
   useEffect(() => {
     const fetchHealthData = async () => {
       if (!token || !userId) {
-        alert("Please log in to view your profile!");
         navigate("/login");
         return;
       }
 
       try {
-        const response = await axios.get(
-          `http://localhost:5000/health_form/health_form/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const response = await api.get(
+          `/health_form/${userId}`
         );
         const data = response.data;
         console.log("Health form response:", JSON.stringify(data, null, 2));
@@ -73,6 +71,9 @@ const Profile = () => {
           : ["none"];
 
         setHealthData({
+          name: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
           height: data.height || "",
           weight: data.weight || "",
           medicalConditions: data.medicalConditions || [],
@@ -88,7 +89,7 @@ const Profile = () => {
           allergies,
         });
         calculateBMI(data.weight, data.height);
-        if (data.height && data.weight && !isNaN(data.height) && !isNaN(data.weight)) {
+        if (data.height && data.weight) {
           fetchPredictions({ ...data, user_id: userId });
         } else {
           console.warn("Skipping predictions: Invalid or missing height/weight");
@@ -100,21 +101,24 @@ const Profile = () => {
           status: error.response?.status,
         });
         if (error.response?.status === 401) {
-          alert("Session expired. Please log in again.");
-          localStorage.removeItem("token");
-          localStorage.removeItem("userId");
+          logout();
           navigate("/login");
+          return; // Don't set loading since we're navigating
         } else if (error.response?.status === 404) {
-          alert("Health form not found. Please complete the form first.");
+          console.log("No health form found, redirecting to health form");
           navigate("/healthform");
+          return; // Don't set loading since we're navigating
         } else {
-          alert("Failed to load profile data.");
+          // For other errors, show error message
+          alert("Error loading profile data. Please try again.");
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchHealthData();
-  }, [userId, navigate]);
+  }, [userId, navigate, token, logout]);
 
   // Calculate BMI
   const calculateBMI = (weight, height) => {
@@ -135,12 +139,6 @@ const Profile = () => {
 
   // Fetch diet and exercise predictions
   const fetchPredictions = async (data) => {
-    if (!token) {
-      alert("No authentication token found. Please log in.");
-      navigate("/login");
-      return;
-    }
-
     if (!data.weight || !data.height || isNaN(data.weight) || isNaN(data.height)) {
       console.warn("Cannot fetch predictions: Invalid or missing weight/height");
       return;
@@ -202,33 +200,21 @@ const Profile = () => {
     console.log("Sending predictionData:", JSON.stringify(predictionData, null, 2));
 
     try {
-      console.log("Calling /predict/diet...");
-      const dietResponse = await axios.post(
-        "http://localhost:5000/predict/diet",
-        predictionData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const dietResponse = await api.post(
+        "/predict/diet",
+        predictionData
       );
       console.log("Diet response:", dietResponse.data);
       setDietRecommendation(dietResponse.data.recommended_diet); // Set diet recommendation
 
-      console.log("Calling /predict/exercise...");
-      const exerciseResponse = await axios.post(
-        "http://localhost:5000/predict/exercise",
-        predictionData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const exerciseResponse = await api.post(
+        "/predict/exercise",
+        predictionData
       );
       console.log("Exercise response:", exerciseResponse.data);
       setExerciseRecommendation(exerciseResponse.data.recommended_exercise); // Set exercise recommendation
     } catch (error) {
-      console.error("Error fetching predictions:", error);
-      if (error.response) {
-        console.log("Full error response:", JSON.stringify(error.response.data, null, 2));
-      }
-      alert(`Failed to fetch recommendations: ${error.message}`);
+      console.error("Predictions error:", error);
     }
   };
 
@@ -244,9 +230,7 @@ const Profile = () => {
       if (
         (name === "weight" || name === "height") &&
         updatedData.weight &&
-        updatedData.height &&
-        !isNaN(updatedData.weight) &&
-        !isNaN(updatedData.height)
+        updatedData.height
       ) {
         fetchPredictions({ ...updatedData, user_id: userId });
       }
@@ -257,34 +241,21 @@ const Profile = () => {
   // Save updated health data to backend
   const handleSave = async () => {
     try {
-      if (!token) {
-        alert("No authentication token found. Please log in.");
-        navigate("/login");
-        return;
-      }
-      const response = await axios.post(
-        "http://localhost:5000/health_form/health_form/",
-        { ...healthData, user_id: userId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await api.post(
+        "/health_form",
+        { ...healthData, user_id: userId }
       );
       if (response.status === 200) {
-        alert("Profile updated successfully!");
+        alert("Profile updated!");
         if (
           healthData.weight &&
-          healthData.height &&
-          !isNaN(healthData.weight) &&
-          !isNaN(healthData.height)
+          healthData.height
         ) {
           fetchPredictions({ ...healthData, user_id: userId });
         }
       }
     } catch (error) {
-      console.error("Error saving health data:", error.response?.data || error.message);
-      alert(error.response?.data?.detail || "Failed to save changes.");
+      alert("Failed to save changes.");
     }
   };
 
@@ -298,13 +269,60 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <h1>Fitness Tracker</h1>
-        <p className="profile-subtitle">Track your BMI and health achievements</p>
-      </div>
+      {loading ? (
+        <div className="loading">Loading profile...</div>
+      ) : (
+        <>
+          <div className="profile-header">
+            <h1>Fitness Tracker</h1>
+            <p className="profile-subtitle">Track your BMI and health achievements</p>
+          </div>
 
       <div className="profile-card">
-        <div className="profile-info">
+        {!healthData.height && !healthData.weight ? (
+          <div className="empty-profile-message">
+            <h2>Welcome to Your Health Profile! 👋</h2>
+            <p>Your profile is empty. Let's get started by updating your health form to receive personalized recommendations.</p>
+            <button className="health-form-button" onClick={handleHealthFormClick}>
+              Update Health Form
+            </button>
+          </div>
+        ) : (
+          <>
+          <div className="profile-info">
+          <div className="info-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              value={healthData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+            />
+          </div>
+
+          <div className="info-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={healthData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div className="info-group">
+            <label>Phone</label>
+            <input
+              type="tel"
+              name="phone"
+              value={healthData.phone}
+              onChange={handleChange}
+              placeholder="Enter your phone number"
+            />
+          </div>
+
           <div className="info-group">
             <label>Height (inches)</label>
             <input
@@ -372,13 +390,15 @@ const Profile = () => {
               {healthData.exerciseFrequency || "Not specified"}
             </div>
           </div>
-        </div>
+          </div>
 
-        <div className="button-group">
-          <button className="save-button" onClick={handleSave}>
-            Save Changes
-          </button>
-        </div>
+          <div className="button-group">
+            <button className="save-button" onClick={handleSave}>
+              Save Changes
+            </button>
+          </div>
+          </>
+        )}
       </div>
       <button className="back-button" onClick={handleBack}>
         Back to Home
@@ -387,6 +407,8 @@ const Profile = () => {
       <button className="health-form-button" onClick={handleHealthFormClick}>
         Update Health Form
       </button>
+        </>
+      )}
     </div>
   );
 };

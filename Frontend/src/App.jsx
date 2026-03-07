@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import ProtectedRoute from './Components/Auth/ProtectedRoute';
 import Home from "./Components/Home/Home";
 import LoginForm from "./Components/LoginForm/LoginForm";
 import Dashboard from "./Components/Home/Arena";
@@ -48,7 +49,7 @@ import StaticStretching from './Components/Exercise/StaticStretching';
 import Pilates from './Components/Exercise/Pilates';
 import MobilityTraining from './Components/Exercise/MobilityTraining';
 import PNFStretching from './Components/Exercise/PNFStretching';
-import Cycling from "./Components/Exercise/cycling";
+import Cycling from "./Components/Exercise/Cycling";
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -59,11 +60,12 @@ function AppContent() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm initialIsRegister={false} />} />
+          <Route path="/register" element={<LoginForm initialIsRegister={true} />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/arena" element={<Arena />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/arena" element={<ProtectedRoute><Arena /></ProtectedRoute>} />
           <Route path="/healthform" element={<HealthForm />} />
 
           {/* Guidance System Routes */}
@@ -79,14 +81,14 @@ function AppContent() {
           {/* Diet Routes */}
           <Route path="/diet" element={<Diet />} />
           <Route path="/diet/:dietId" element={<DietPlan />} />
-          <Route path="/food-log" element={<FoodLog />} />
+          <Route path="/food-log" element={<ProtectedRoute><FoodLog /></ProtectedRoute>} />
           <Route path="/meal-notifications" element={<MealNotifications />} />
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/diet-report" element={<DietReport />} />
           <Route path="/community-chat" element={<CommunityChat />} />
 
           {/* Exercise Routes */}
-          <Route path="/exercise" element={<Exercise />} />
+          <Route path="/exercise" element={<ProtectedRoute><Exercise /></ProtectedRoute>} />
           <Route path="/exercise/strength" element={<StrengthPage />} />
           <Route path="/exercise/cardio" element={<Cardio />} />
           <Route path="/exercise/flexibility" element={<FlexibilityPage />} />
@@ -119,10 +121,10 @@ function AppContent() {
             element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
           />
 
-          <Route path="/tracking" element={<Tracking />} />
-          <Route path="/tracking/water" element={<Water />} />
-          <Route path="/tracking/sleep" element={<Sleep />} />
-          <Route path="/tracking/calories" element={<Calories />} />
+          <Route path="/tracking" element={<ProtectedRoute><Tracking /></ProtectedRoute>} />
+          <Route path="/tracking/water" element={<ProtectedRoute><Water /></ProtectedRoute>} />
+          <Route path="/tracking/sleep" element={<ProtectedRoute><Sleep /></ProtectedRoute>} />
+          <Route path="/tracking/calories" element={<ProtectedRoute><Calories /></ProtectedRoute>} />
 
           {/* 404 Route */}
           <Route path="*" element={<Navigate to="/" replace />} />

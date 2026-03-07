@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../utils/api';
 import './Exercise.css';
 
 const Exercise = () => {
@@ -7,6 +8,7 @@ const Exercise = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [savedExercisesCount, setSavedExercisesCount] = useState(0);
 
   const categories = [
     {
@@ -39,29 +41,30 @@ const Exercise = () => {
   ];
 
   useEffect(() => {
-    const loadImages = async () => {
+    const fetchData = async () => {
       try {
+        const response = await api.get('/exercises');
+        setSavedExercisesCount(response.data.length);
+
+        // Load images
         await Promise.all(
           categories.map(category => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
               const img = new Image();
               img.src = category.image;
               img.onload = resolve;
-              img.onerror = () => {
-                console.warn(`Failed to load ${category.image}, using fallback`);
-                resolve();
-              };
+              img.onerror = resolve;
             });
           })
         );
       } catch (err) {
-        setError('Failed to load images');
+        console.error('Error fetching exercise data:', err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadImages();
+    fetchData();
   }, []);
 
   const handleCategoryClick = (path) => {
@@ -101,10 +104,10 @@ const Exercise = () => {
   return (
     <div className="exercise-page">
       <div className="exercise-container">
-        
-        
+
+
         <h1>Choose Your Workout</h1>
-        
+
         <div className="search-container">
           <div className="search-box">
             <input
@@ -120,20 +123,20 @@ const Exercise = () => {
         <div className="category-column">
           {filteredCategories.length > 0 ? (
             filteredCategories.map((category) => (
-              <div 
-                key={category.id} 
+              <div
+                key={category.id}
                 className="category-card"
                 onClick={() => handleCategoryClick(category.path)}
               >
                 <div className="category-image">
-                  <img 
-                    src={category.image} 
+                  <img
+                    src={category.image}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = category.fallbackImage;
                     }}
-                    alt={category.name} 
-                    loading="lazy" 
+                    alt={category.name}
+                    loading="lazy"
                   />
                   <div className="category-overlay">
                     <h3>{category.name}</h3>

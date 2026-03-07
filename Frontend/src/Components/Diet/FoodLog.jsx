@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import './FoodLog.css';
 
 const FoodLog = () => {
@@ -12,10 +12,7 @@ const FoodLog = () => {
 
   const fetchFoodLogs = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/diet/foodlog', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/food');
       setLogs(response.data);
     } catch (error) {
       console.error('Error fetching food logs:', error);
@@ -41,10 +38,7 @@ const FoodLog = () => {
     };
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/diet/foodlog', payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.post('/food', payload);
 
       setLogs((prev) => [response.data, ...prev]);
       setMeal({ time: '', description: '', quantity: '' });

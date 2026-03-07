@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../utils/api';
 import './Water.css';
 
 const Water = () => {
@@ -16,11 +16,8 @@ const Water = () => {
 
   const fetchWaterData = async () => {
     try {
-      const token = localStorage.getItem('token');
       const today = new Date().toLocaleDateString();
-      const response = await axios.get(`http://localhost:5000/api/tracking/water?date=${today}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get(`/water?date=${today}`);
 
       const logs = response.data;
       setWaterLog(logs);
@@ -33,7 +30,6 @@ const Water = () => {
 
   const handleAddWater = async (amount) => {
     try {
-      const token = localStorage.getItem('token');
       const now = new Date();
       const newEntry = {
         amount,
@@ -41,9 +37,7 @@ const Water = () => {
         timestamp: now.toLocaleTimeString()
       };
 
-      const response = await axios.post('http://localhost:5000/api/tracking/water', newEntry, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.post('/water', newEntry);
 
       // Update local state with the saved entry from backend
       const savedEntry = { ...response.data, total: waterIntake + amount };

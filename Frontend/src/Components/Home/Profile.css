@@ -137,3 +137,49 @@ body {
     box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5);
     background: linear-gradient(135deg, #27ae60, #219a52);
 }
+
+/* Empty profile message styling */
+.empty-profile-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    gap: 30px;
+}
+
+.empty-profile-message h2 {
+    font-size: 2rem;
+    color: #2ecc71;
+    margin: 0;
+    font-weight: 600;
+}
+
+.empty-profile-message p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.empty-profile-message .health-form-button {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+}
+
+/* Loading state */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    font-size: 1.5rem;
+    color: #2ecc71;
+    font-weight: 600;
+}

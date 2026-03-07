@@ -15,11 +15,15 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/exercises", require("./routes/exerciseRoutes"));
+app.use("/api/water", require("./routes/waterRoutes"));
+app.use("/api/food", require("./routes/foodRoutes"));
+app.use("/api/sleep", require("./routes/sleepRoutes"));
 app.use("/api/tracking", require("./routes/trackingRoutes"));
 app.use("/api/diet", require("./routes/dietRoutes"));
 app.use("/api/chat", require("./routes/chatRoutes"));
-app.use("/health_form", require("./routes/healthRoutes"));
-app.use("/predict", require("./routes/predictRoutes"));
+app.use("/api/health_form", require("./routes/healthRoutes"));
+app.use("/api/predict", require("./routes/predictRoutes"));
 
 app.get("/", (req, res) => {
   res.send("API Running");

@@ -9,9 +9,8 @@ const Biceps = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredExercises, setFilteredExercises] = useState([]);
-  const [dashboardExercises, setDashboardExercises] = useState(
-    JSON.parse(localStorage.getItem('dashboardExercises')) || []
-  );
+  const [dashboardExercises, setDashboardExercises] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const bicepExercises = [
     {
       id: 1,
@@ -151,6 +150,21 @@ const Biceps = () => {
   }, []);
 
   useEffect(() => {
+    fetchDashboardExercises();
+  }, []);
+
+  const fetchDashboardExercises = async () => {
+    try {
+      const response = await api.get('/exercises');
+      setDashboardExercises(response.data);
+    } catch (error) {
+      console.error('Error fetching exercises:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     const filtered = bicepExercises.filter(exercise =>
       exercise.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       exercise.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -158,22 +172,35 @@ const Biceps = () => {
     setFilteredExercises(filtered);
   }, [searchTerm]);
 
-  useEffect(() => {
-    localStorage.setItem('dashboardExercises', JSON.stringify(dashboardExercises));
-  }, [dashboardExercises]);
+  const handleAddToDashboard = async (exercise) => {
+    const existing = dashboardExercises.find(ex => ex.exerciseId === exercise.id);
 
-  const handleAddToDashboard = (exercise) => {
-    const isExerciseInDashboard = dashboardExercises.some(ex => ex.id === exercise.id);
-    
-    if (isExerciseInDashboard) {
-      setDashboardExercises(dashboardExercises.filter(ex => ex.id !== exercise.id));
+    if (existing) {
+      try {
+        await api.delete(`/exercises/${existing._id}`);
+        setDashboardExercises(prev => prev.filter(ex => ex._id !== existing._id));
+      } catch (error) {
+        console.error('Error removing exercise:', error);
+      }
     } else {
-      setDashboardExercises([...dashboardExercises, exercise]);
+      try {
+        const newExercise = {
+          exerciseId: exercise.id,
+          name: exercise.name,
+          category: 'Biceps',
+          image: exercise.image,
+          sets: exercise.sets
+        };
+        const response = await api.post('/exercises', newExercise);
+        setDashboardExercises(prev => [...prev, response.data]);
+      } catch (error) {
+        console.error('Error adding exercise:', error);
+      }
     }
   };
 
   const isInDashboard = (exerciseId) => {
-    return dashboardExercises.some(ex => ex.id === exerciseId);
+    return dashboardExercises.some(ex => ex.exerciseId === exerciseId);
   };
 
   const scrollToTop = () => {
@@ -212,7 +239,7 @@ const Biceps = () => {
                 <h3>{exercise.name}</h3>
                 <p>{exercise.description}</p>
                 <p className="sets-info">{exercise.sets}</p>
-                <button 
+                <button
                   className="start-exercise"
                   onClick={() => handleStartExercise(exercise)}
                 >
@@ -228,9 +255,9 @@ const Biceps = () => {
           ↑
         </button>
       )}
-        <button className="back-to-categories" onClick={() => navigate('/exercise/strength')}>
-          Back to strendth categories
-        </button>
+      <button className="back-to-categories" onClick={() => navigate('/exercise/strength')}>
+        Back to strength categories
+      </button>
     </div>
   );
 };

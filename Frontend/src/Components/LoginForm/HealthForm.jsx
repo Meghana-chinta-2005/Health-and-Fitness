@@ -1,72 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../../context/AuthContext";
+import api from '../../utils/api';
 import "./HealthForm.css"; // Assuming this is your CSS file
 
 const HealthForm = () => {
   const navigate = useNavigate();
+  const { userId } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [userId, setUserId] = useState("");
   const [step, setStep] = useState(1); // Track the current step
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    const storedToken = localStorage.getItem("token");
-
-    if (!storedUserId || !storedToken) {
+    if (!userId) {
       alert("Please log in to continue!");
       navigate("/login");
-    } else {
-      setUserId(storedUserId);
     }
-  }, [navigate]);
+  }, [userId, navigate]);
 
   const onSubmit = async (data) => {
     try {
       const formData = {
         ...data,
-        user_id: String(userId),
+        user_id: userId,
         medicalConditions: data.medicalConditions
           ? data.medicalConditions.split(",").map((item) => item.trim())
           : [],
         fitnessGoals: data.fitnessGoals || [],
       };
-      const token = localStorage.getItem("token");
-      console.log("Submitting with Token:", token);
-      console.log("Authorization Header:", `Bearer ${token}`);
-      console.log("Form Data:", formData);
 
-      const response = await axios.post(
-        "http://localhost:5000/health_form/health_form/",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await api.post(
+        "/health_form",
+        formData
       );
 
       console.log("Response:", response.data);
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         alert("Health form submitted successfully!");
         navigate("/profile"); // Redirect to profile after successful submission
       }
     } catch (error) {
-      console.error("Submission Error:", error.response?.data || error.message);
-      const errorDetail = error.response?.data?.detail || "Error submitting health form. Please try again.";
-      if (error.response?.status === 401 && errorDetail.includes("token expired")) {
-        alert("Your session has expired. Please log in again.");
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        navigate("/login"); // Redirect to login if token is expired
-      } else {
-        alert(errorDetail);
-      }
+      console.error("Submission Error:", {
+        data: error.response?.data,
+        message: error.message,
+        status: error.response?.status
+      });
+      const errorDetail = error.response?.data?.detail || error.response?.data?.message || error.message || "Error submitting health form. Please try again.";
+      alert(errorDetail);
     }
   };
 
